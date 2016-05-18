@@ -17,6 +17,7 @@ func main() {
 	bucket := flag.String("bucket", "", "S3 bucket name")
 	logRequests := flag.Bool("log-requests", true, "log HTTP requests")
 	region := flag.String("region", "us-east-1", "AWS S3 Region")
+	path := flag.String("path", "", "path to prepend to requests")
 	flag.Parse()
 
 	if *bucket == "" {
@@ -30,6 +31,7 @@ func main() {
 	var h http.Handler
 	h = &Proxy{
 		Bucket: *bucket,
+		Path:   *path,
 		Svc:    svc,
 	}
 	if *logRequests {

@@ -15,14 +15,18 @@ import (
 
 type Proxy struct {
 	Bucket string
+	Path   string
 	Svc    *s3.S3
 }
 
 func (p *Proxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	key := req.URL.Path
+
 	if key == "/" {
 		key = "/index.html"
 	}
+
+	key = p.Path + key
 
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(p.Bucket),
